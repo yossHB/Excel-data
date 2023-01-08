@@ -4,9 +4,12 @@ pip install xlrd           # Python module to read data from the excel files
 pip install pandas
 pip install SQLAlchemy
 pip install cx_Oracle
+pip install openpyxl for tasting part
 
-Help : 
+
+Help :
     - https://www.sqlshack.com/python-scripts-to-format-data-in-microsoft-excel/
+    - https://www.geeksforgeeks.org/oracle-database-connection-in-python/
 
 '''
 
@@ -21,7 +24,7 @@ from sqlalchemy.exc import SQLAlchemyError
 username, password, host = 'admin', 'admin', 'localhost'
 filepath = 'C:/Users/Admin/Desktop/project/python/Excel/Welocme.xlsx'
 DBNAme = 'Resources table'
-titles = ['name', 'sources','type', 'transformations', 'RQ' ]
+titles = ['name', 'type', 'sources', 'transformations', 'RQ' ]
 
 def fetch_data(username, password, host):
     """
@@ -47,7 +50,7 @@ def fetch_data(username, password, host):
 
 df_user_submitted_comments = fetch_data(username, password, host)
 
-def write_data_to_excel(df, filepath, DBNAme, titles):
+def write_data_to_excel(df, filepath = filepath, DBNAme = DBNAme, titles = titles):
     """
     Write data from a dataframe to an Excel spreadsheet.
 
@@ -72,8 +75,7 @@ def write_data_to_excel(df, filepath, DBNAme, titles):
             worksheet.write(row, 0, data)
 
         for row, data in enumerate(df.dtypes, start=2):
-            worksheet.write(row, 2, str(data))
-
+            worksheet.write(row, 1, str(data))
 
 
 write_data_to_excel(df_user_submitted_comments, filepath, DBNAme, titles)
