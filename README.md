@@ -1,0 +1,1 @@
+this project aims to create a functional excel file using a python code (semi-automatic) in which we can find the details of the data that is in an oracle database as the name, its type, its sources, the transformations performed and remarks for each variable.

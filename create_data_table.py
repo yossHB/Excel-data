@@ -15,25 +15,26 @@ Help :
     - https://www.geeksforgeeks.org/oracle-database-connection-in-python/
 
 '''
-from dotenv.main import load_dotenv
-import os
 
 import xlsxwriter
-from decouple import config
 import pandas as pd
 import cx_Oracle
 import sqlalchemy
 from sqlalchemy.exc import SQLAlchemyError
+from decouple import config
 
 import ads
 from sqlalchemy import text
 
-load_dotenv()
-username, password, host  = os.environ['username'], os.environ['password'], os.environ['host']
+# Load sensitive information from environment variables or configuration file
+username = config('username')
+password = config('password')
+host = config('host')
 
-filepath = os.environ['filepath']
-DBNAme = os.environ['DBNAme']
-table_name = os.environ['table_name']
+filepath = config('filepath')
+DBNAme = config('DBNAme')
+table_name = config('table_name')
+
 titles = ['name', 'type', 'sources', 'transformations', 'RQ' ]
 
 def fetch_data(username, password, host, table_name=table_name):
