@@ -33,9 +33,8 @@ username, password, host  = os.environ['username'], os.environ['password'], os.e
 
 filepath = os.environ['filepath']
 DBNAme = os.environ['DBNAme']
-titles = os.environ['titles']
 table_name = os.environ['table_name']
-
+titles = ['name', 'type', 'sources', 'transformations', 'RQ' ]
 
 def fetch_data(username, password, host, table_name=table_name):
     """
