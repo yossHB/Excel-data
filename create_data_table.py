@@ -5,6 +5,8 @@ pip install pandas
 pip install SQLAlchemy     # SQLAlchemy is a library that facilitates the communication between Python programs and databases. Most of the times, this library is used as an Object Relational Mapper (ORM) tool that translates Python classes to tables on relational databases and automatically converts function calls to SQL statements.
 pip install cx_Oracle
 pip install openpyxl for tasting part
+pip install python-dotenv
+
 - pip3 freeze command will tell us the modules installed with their versions.
     * pip3 freeze command will tell us the modules installed with their versions.
 
@@ -13,9 +15,11 @@ Help :
     - https://www.geeksforgeeks.org/oracle-database-connection-in-python/
 
 '''
+from dotenv.main import load_dotenv
+import os
 
 import xlsxwriter
-
+from decouple import config
 import pandas as pd
 import cx_Oracle
 import sqlalchemy
@@ -24,11 +28,14 @@ from sqlalchemy.exc import SQLAlchemyError
 import ads
 from sqlalchemy import text
 
-username, password, host = 'admin', 'admin', 'localhost'
-filepath = 'C:/Users/Admin/Desktop/project/python/Excel/Welocme.xlsx'
-DBNAme = 'Resources table'
-titles = ['name', 'type', 'sources', 'transformations', 'RQ' ]
-table_name = 'CodeSpeedy'
+load_dotenv()
+username, password, host  = os.environ['username'], os.environ['password'], os.environ['host']
+
+filepath = os.environ['filepath']
+DBNAme = os.environ['DBNAme']
+titles = os.environ['titles']
+table_name = os.environ['table_name']
+
 
 def fetch_data(username, password, host, table_name=table_name):
     """
@@ -55,9 +62,9 @@ def fetch_data(username, password, host, table_name=table_name):
 
 df_user_submitted_comments = fetch_data(username, password, host)
 
-def write_data_to_excel(df, filepath = filepath, DBNAme = DBNAme, titles = titles):
+def write_data_to_excel(df, filepath = filepath, table_name = table_name, DBNAme = DBNAme, titles = titles):
     """
-    Write data from a dataframe to an Excel spreadsheet.
+    Write the name and the type of columns from a dataframe to an Excel spreadsheet.
 
     Parameters:
         df (pd.DataFrame): The dataframe to write to the spreadsheet.
@@ -82,8 +89,11 @@ def write_data_to_excel(df, filepath = filepath, DBNAme = DBNAme, titles = title
         for row, data in enumerate(df.dtypes, start=2):
             worksheet.write(row, 1, str(data))
 
+        for row, data in enumerate(df, start=2):
+            worksheet.write(row, 2, table_name)
 
-write_data_to_excel(df_user_submitted_comments, filepath, DBNAme, titles)
+
+write_data_to_excel(df_user_submitted_comments, filepath, table_name, DBNAme, titles)
 print(df_user_submitted_comments)
 
 

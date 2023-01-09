@@ -17,7 +17,6 @@ def test_fetch_data()-> None:
 
 test_fetch_data()
 
-
 titles = ['name', 'type']
 
 def test_write_data_to_excel() -> None:
@@ -25,7 +24,7 @@ def test_write_data_to_excel() -> None:
     df = pd.DataFrame([[1, "a", 3.5], [4, "b", 6.3]], columns=['a', 'b', 'c'])
 
     # Write the data to an Excel file
-    write_data_to_excel(df, 'C:/Users/Admin/Desktop/project/python/Excel/test.xlsx',titles=titles)
+    write_data_to_excel(df, 'C:/Users/Admin/Desktop/project/python/Excel/test.xlsx', table_name = 'CodeSpeedy', titles=titles)
 
     # Read the data back from the file
     df_read = pd.read_excel('C:/Users/Admin/Desktop/project/python/Excel/test.xlsx',index_col=0, skiprows=[0,1])
