@@ -2,10 +2,11 @@
 pip install XlsxWriter     # Python module to write the Microsoft Excel files in XLSX format
 pip install xlrd           # Python module to read data from the excel files
 pip install pandas
-pip install SQLAlchemy
+pip install SQLAlchemy     # SQLAlchemy is a library that facilitates the communication between Python programs and databases. Most of the times, this library is used as an Object Relational Mapper (ORM) tool that translates Python classes to tables on relational databases and automatically converts function calls to SQL statements.
 pip install cx_Oracle
 pip install openpyxl for tasting part
-
+- pip3 freeze command will tell us the modules installed with their versions.
+    * pip3 freeze command will tell us the modules installed with their versions.
 
 Help :
     - https://www.sqlshack.com/python-scripts-to-format-data-in-microsoft-excel/
@@ -20,13 +21,16 @@ import cx_Oracle
 import sqlalchemy
 from sqlalchemy.exc import SQLAlchemyError
 
+import ads
+from sqlalchemy import text
 
 username, password, host = 'admin', 'admin', 'localhost'
 filepath = 'C:/Users/Admin/Desktop/project/python/Excel/Welocme.xlsx'
 DBNAme = 'Resources table'
 titles = ['name', 'type', 'sources', 'transformations', 'RQ' ]
+table_name = 'CodeSpeedy'
 
-def fetch_data(username, password, host):
+def fetch_data(username, password, host, table_name=table_name):
     """
     Fetch data from an Oracle database using the provided credentials and host.
 
@@ -39,10 +43,11 @@ def fetch_data(username, password, host):
         pd.DataFrame: A dataframe containing the results of the query.
     """
     try:
-        engine = sqlalchemy.create_engine(f"oracle+cx_oracle://{username}:{password}@{host}")
-        user_submitted_comments_sql = """SELECT * FROM USER_SUBMITTED_COMMENTS"""
-        df_user_submitted_comments = pd.read_sql(user_submitted_comments_sql, engine)
+        engine = sqlalchemy.create_engine(f"oracle+cx_oracle://{username}:{password}@{host}/xe")
+        user_submitted_comments_sql = f"""SELECT * FROM {table_name}"""
+        df_user_submitted_comments = pd.read_sql(user_submitted_comments_sql, con = engine)
         return df_user_submitted_comments
+
     except sqlalchemy.exc.SQLAlchemyError as e:
         print(e)
         return pd.DataFrame()
@@ -79,7 +84,7 @@ def write_data_to_excel(df, filepath = filepath, DBNAme = DBNAme, titles = title
 
 
 write_data_to_excel(df_user_submitted_comments, filepath, DBNAme, titles)
-
+print(df_user_submitted_comments)
 
 
 
